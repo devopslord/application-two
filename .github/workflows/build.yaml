@@ -1,0 +1,21 @@
+
+on:
+  workflow_dispatch:
+    inputs:
+      image-name:
+        required: true
+        type: string
+name: Build Application Two
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ inputs.image-name }}"
+  deploy:
+    needs: build
+    uses: outofdevops/shared-workflows/.github/workflows/deploy.yaml@main
+    with:
+      deployment-name: "service-two"
+      version: "${{ github.sha }}"
+      target: "eu-west-1"
